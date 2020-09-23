@@ -82,11 +82,24 @@ Status: Stable
 2. Update system on all nodes (Controller, Network, Compute)
 ====================
 ::
+  # yum update -y ; reboot
+   
+Edit the Hosts file on each server and set the below entries in case you don’t your local DNS server.
+::
 
-   [root@controllernode ~]# yum  update
-   [root@networknode ~]# yum update
-   [root@computernode ~]# yum update
+    192.168.100.12 controllernode.test.local controllernode
+    192.168.100.14 computenode.test.local computenode
+    192.168.100.13 networknode.test.local networknode
 
+Stop and disable firewalld & NetworkManager Service
+Execute the beneath commands one after the another to stop and disable firewalld and NetworkManager Service on all nodes.
+::
+
+    ~]# systemctl stop firewalld 
+    ~]# systemctl disable firewalld 
+    ~]# systemctl stop NetworkManager 
+    ~]# systemctl disable NetworkManager
+    
 3. Install RDO repository (Controller node)
 ====================
 Config NTP
@@ -101,16 +114,8 @@ Config NTP
     systemctl restart chronyd
     chronyc sources
 
-::
 
-  [root@controllernode ~]# yum install https://repos.fedorapeople.org/repos/openstack/openstack-ussuri/rdo-release-ussuri-1.el8.noarch.rpm
-
-Verify installed RDO package:
-::
-
-   [root@controllernode ~]# rpm -qa | grep rdo-release
-   rdo-release-ussuri-1.el8.noarch
-4. Install packstack automated installer (Controller node):
+4. Install 	Install MariaDB (Controller node):
 ====================
 ::
 
