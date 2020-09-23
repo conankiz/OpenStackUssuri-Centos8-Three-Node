@@ -13,14 +13,20 @@ Authors
 
 ::
 
-      eth0|10.0.0.30 
-      +-----------+-----------+
-      |    [ Control Node ]   |
-      |                       |
-      |  MariaDB    RabbitMQ  |
-      |  Memcached  httpd     |
-      |  Keystone             |
-      +-----------------------+
+            ------------+---------------------------+---------------------------+------------
+                  |                           |                           |
+              eth0|10.0.0.30              eth0|10.0.0.50              eth0|10.0.0.51
+      +-----------+-----------+   +-----------+-----------+   +-----------+-----------+
+      |    [ Control Node ]   |   |    [ Network Node ]   |   |    [ Compute Node ]   |
+      |                       |   |                       |   |                       |
+      |  MariaDB    RabbitMQ  |   |      Open vSwitch     |   |        Libvirt        |
+      |  Memcached  httpd     |   |        L2 Agent       |   |     Nova Compute      |
+      |  Keystone   Glance    |   |        L3 Agent       |   |      Open vSwitch     |
+      |  Nova API             |   |     Metadata Agent    |   |        L2 Agent       |
+      |  Neutron Server       |   |                       |   |                       |
+      |  Metadata Agent       |   |                       |   |                       |
+      +-----------------------+   +-----------+-----------+   +-----------------------+
+                                          eth1|(UP with no IP)
 
 Contributors
 ==========
