@@ -123,11 +123,12 @@ Execute the beneath commands one after the another to stop and disable firewalld
     chronyc sources
 
 
-4. Install 	Install MariaDB (Controller node):
-====================
+3.2 Install MariaDB to configure Database Server:
+---------------
 ::
 
-   [root@controllernode ~]# sudo dnf install -y network-scripts
+   [root@controllernode ~]# dnf module -y install mariadb:10.3
+   [root@controllernode ~]# vi /etc/my.cnf.d/charaset.cnf
 
 * Restart the networking service::
 
