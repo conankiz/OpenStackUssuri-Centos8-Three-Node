@@ -145,9 +145,14 @@ Execute the beneath commands one after the another to stop and disable firewalld
   [root@controllernode ~]# systemctl enable --now mariadb
 
 3.3 Initial Settings for MariaDB
+----------------
 ::
 
     #mysql_secure_installation
+    
+4. 	Add Repository of Openstack Ussuri and also Upgrade CentOS System.
+================
+
 * Restart the networking service::
 
    service networking restart
