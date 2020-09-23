@@ -1,15 +1,15 @@
-==========================================================
-  OpenStack Grizzly Install Guide
-==========================================================
+=====================================================================
+  OpenStack Ussuri Install (Controller, Network, Compute) on CentOS 8
+=====================================================================
 
 :Version: 2.0
-:Source: https://github.com/mseknibilel/OpenStack-Grizzly-Install-Guide
-:Keywords: Multi node, Grizzly, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Ubuntu Server 12.04/13.04 (64 bits).
+:Source: https://github.com/conankiz/OpenStackUssuri-Centos8-Three-Node
+:Keywords: Three node, Ussuri, Quantum, Nova, Keystone, Glance, Horizon, Cinder, OpenVSwitch, KVM, Centos 8 (64 bits).
 
 Authors
 ==========
 
-`Bilel Msekni <http://www.linkedin.com/profile/view?id=136237741&trk=tab_pro>`_ 
+`Conankiz <http://www.linkedin.com/profile/>`_ 
 
 Contributors
 ==========
