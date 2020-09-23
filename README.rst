@@ -11,6 +11,15 @@ Authors
 
 `Conankiz <http://www.linkedin.com/profile/>`_ 
 
+eth0|10.0.0.30 
++-----------+-----------+
+|    [ Control Node ]   |
+|                       |
+|  MariaDB    RabbitMQ  |
+|  Memcached  httpd     |
+|  Keystone             |
++-----------------------+
+
 Contributors
 ==========
 
@@ -83,6 +92,9 @@ Verify installed RDO package:
    rdo-release-ussuri-1.el8.noarch
 4. Install packstack automated installer (Controller node):
 ====================
+::
+
+   [root@controllernode ~]# sudo dnf install -y network-scripts
 
 * Restart the networking service::
 
