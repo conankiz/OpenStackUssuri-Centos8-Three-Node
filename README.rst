@@ -62,59 +62,15 @@ Status: Stable
 
 .. image:: http://i.imgur.com/Frsughe.jpg
 
-2. Controller Node
-===============
+1.   Update system on all nodes (Controller, Network, Compute):
+   [root@controllernode ~]# yum  update
+   [root@networknode ~]# yum update
+   [root@computernode ~]# yum update
 
-2.1. Preparing Centos 8
------------------------
+2. Install RDO repository (Controller node):
+  [root@controllernode ~]# yum install https://repos.fedorapeople.org/repos/openstack/openstack-ussuri/rdo-release-ussuri-1.el8.noarch.rpm
 
-* Controller node interfaces configuration before OpenStack installation:::
-  [root@controllernode ~]# ip a
-  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-  2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 00:0c:29:62:bd:aa brd ff:ff:ff:ff:ff:ff
-    inet 192.168.100.12/24 brd 192.168.100.255 scope global noprefixroute ens33
-       valid_lft forever preferred_lft forever
-    inet6 fe80::efb2:bc89:6133:59af/64 scope link dadfailed tentative noprefixroute 
-       valid_lft forever preferred_lft forever
-    inet6 fe80::42c0:835e:1690:1204/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-  3: ens37: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 00:0c:29:62:bd:b4 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.232.157/24 brd 192.168.232.255 scope global dynamic noprefixroute ens37
-       valid_lft 1398sec preferred_lft 1398sec
-    inet6 fe80::e2d1:5f86:aef0:eedd/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
-
-* Update your system::
-
-   apt-get update -y
-   apt-get upgrade -y
-   apt-get dist-upgrade -y
-
-2.2. Networking
-------------
-
-* Only one NIC should have an internet access::
-
-   #For Exposing OpenStack API over the internet
-   auto eth1
-   iface eth1 inet static
-   address 192.168.100.51
-   netmask 255.255.255.0
-   gateway 192.168.100.1
-   dns-nameservers 8.8.8.8
-
-   #Not internet connected(used for OpenStack management)
-   auto eth0
-   iface eth0 inet static
-   address 10.10.10.51
-   netmask 255.255.255.0
+Verify installed RDO package:
 
 * Restart the networking service::
 
