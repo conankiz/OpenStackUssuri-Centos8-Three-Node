@@ -45,9 +45,9 @@ Table of Contents
 
   0. What is it?
   1. Requirements
-  2. Controller Node
-  3. Network Node
-  4. Compute Node
+  3. Controller Node
+  4. Network Node
+  5. Compute Node
   5. Your first VM
   6. Licensing
   7. Contacts
@@ -263,9 +263,38 @@ Execute the beneath commands one after the another to stop and disable firewalld
     Setting permissions for user "openstack" in vhost "/" ...
 
 
-4. Configure Keystone
-==============
+3.7 Configure Keystone
+------------
 Install and Configure OpenStack Identity Service (Keystone)
+- Add a User and Database on MariaDB for Keystone:
+::
+
+      [root@controllernode ~]# mysql -u root -p
+      Enter password: 
+      Welcome to the MariaDB monitor.  Commands end with ; or \g.
+      Your MariaDB connection id is 8
+      Server version: 10.3.17-MariaDB MariaDB Server
+
+      Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+      Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+      MariaDB [(none)]> create database keystone;
+      Query OK, 1 row affected (0.001 sec)
+
+      MariaDB [(none)]> grant all privileges on keystone.* to keystone@'localhost' identified by 'password'; 
+      Query OK, 0 rows affected (0.003 sec)
+
+      MariaDB [(none)]> grant all privileges on keystone.* to keystone@'%' identified by 'password'; 
+      Query OK, 0 rows affected (0.000 sec)
+
+      MariaDB [(none)]> flush privileges;
+      Query OK, 0 rows affected (0.001 sec)
+
+      MariaDB [(none)]> exit
+      Bye
+
+
 
 2.4. RabbitMQ
 -------------------
