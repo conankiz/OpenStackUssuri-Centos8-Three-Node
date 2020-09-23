@@ -62,8 +62,9 @@ Status: Stable
 
 .. image:: http://i.imgur.com/Frsughe.jpg
 
-2. Update system on all nodes (Controller, Network, Compute):
+2. Update system on all nodes (Controller, Network, Compute)
 ====================
+::
 
    root@controllernode ~]# yum  update
    root@networknode ~]# yum update
