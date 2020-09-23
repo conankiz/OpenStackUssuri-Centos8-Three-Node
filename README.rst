@@ -84,14 +84,14 @@ Status: Stable
 ::
   # yum update -y ; reboot
    
-Edit the Hosts file on each server and set the below entries in case you don’t your local DNS server.
+- Edit the Hosts file on each server and set the below entries in case you don’t your local DNS server.
 ::
 
     192.168.100.12 controllernode.test.local controllernode
     192.168.100.14 computenode.test.local computenode
     192.168.100.13 networknode.test.local networknode
 
-Stop and disable firewalld & NetworkManager Service
+- Stop and disable firewalld & NetworkManager Service
 Execute the beneath commands one after the another to stop and disable firewalld and NetworkManager Service on all nodes.
 ::
 
