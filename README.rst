@@ -150,7 +150,7 @@ Execute the beneath commands one after the another to stop and disable firewalld
 
     #mysql_secure_installation
     
-3.4 	Add Repository of Openstack Ussuri and also Upgrade CentOS System.
+3.4 	Initial Settings for MariaDB.
 ----------------
 ::
 
@@ -221,22 +221,51 @@ Execute the beneath commands one after the another to stop and disable firewalld
     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
     MariaDB [(none)]>
-
-* Restart the networking service::
-
-   service networking restart
-
-2.3. MySQL & RabbitMQ
+    
+3.5 Add Repository of Openstack Ussuri and also Upgrade CentOS System
 ------------
+- Especially, it needs to upgrade some Python3 packages from Openstack Ussuri repository.
+::
 
-* Install MySQL::
+     [root@controllernode ~]# dnf -y install centos-release-openstack-ussuri
+     [root@controllernode ~]# sed -i -e "s/enabled=1/enabled=0/g" /etc/yum.repos.d/CentOS-OpenStack-ussuri.repo
+     [root@controllernode ~]# dnf --enablerepo=centos-openstack-ussuri -y upgrade
 
-   apt-get install -y mysql-server python-mysqldb
+3.6 	Install RabbitMQ, Memcached.
+---------------
+- enable PowerTools
+::
 
-* Configure mysql to accept all incoming requests::
+    [root@controllernode ~]# dnf --enablerepo=PowerTools -y install rabbitmq-server memcached
+    [root@controllernode ~]# vi /etc/my.cnf.d/mariadb-server.cnf
+      # add into [mysqld] section
+      [mysqld]
+      .....
+      .....
+      # default value 151 is not enough on Openstack Env
+      max_connections=500
+      
+    [root@controllernode ~]# vi /etc/sysconfig/memcached
+      # line 5: change (listen all)
+      OPTIONS="-l 0.0.0.0,::"
+    
+    [root@controllernode ~]# systemctl restart mariadb rabbitmq-server memcached
+    [root@controllernode ~]# systemctl enable mariadb rabbitmq-server memcached
+    
+- add openstack user
+- set any password you like for [password]
 
-   sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf
-   service mysql restart
+::
+
+    [root@controllernode ~]# rabbitmqctl add_user openstack password
+    Adding user "openstack"
+    [root@controllernode ~]# rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+    Setting permissions for user "openstack" in vhost "/" ...
+
+
+4. Configure Keystone
+==============
+Install and Configure OpenStack Identity Service (Keystone)
 
 2.4. RabbitMQ
 -------------------
