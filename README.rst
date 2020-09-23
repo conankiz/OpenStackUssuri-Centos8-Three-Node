@@ -89,6 +89,23 @@ Status: Stable
 
 3. Install RDO repository (Controller node)
 ====================
+Config NTP
+::
+
+    timedatectl set-timezone Asia/Ho_Chi_Minh
+    yum -y install chrony
+    sed -i 's/server 0.centos.pool.ntp.org iburst/ \
+    server 1.vn.pool.ntp.org iburst \
+    server 0.asia.pool.ntp.org iburst \
+    server 3.asia.pool.ntp.org iburst/g' /etc/chrony.conf
+    sed -i 's/server 1.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
+    sed -i 's/server 2.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
+    sed -i 's/server 3.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
+
+systemctl enable chronyd.service
+systemctl restart chronyd.service
+chronyc sources
+
 ::
 
   [root@controllernode ~]# yum install https://repos.fedorapeople.org/repos/openstack/openstack-ussuri/rdo-release-ussuri-1.el8.noarch.rpm
