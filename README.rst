@@ -153,6 +153,7 @@ Execute the beneath commands one after the another to stop and disable firewalld
 3.4 	Add Repository of Openstack Ussuri and also Upgrade CentOS System.
 ----------------
 ::
+
       [root@controllernode ~]# mysql_secure_installation
       Enter current password for root (enter for none): 
       OK, successfully used password, moving on...
