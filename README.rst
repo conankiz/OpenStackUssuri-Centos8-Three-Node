@@ -13,14 +13,14 @@ Authors
 
 ::
 
-eth0|10.0.0.30 
-+-----------+-----------+
-|    [ Control Node ]   |
-|                       |
-|  MariaDB    RabbitMQ  |
-|  Memcached  httpd     |
-|  Keystone             |
-+-----------------------+
+      eth0|10.0.0.30 
+      +-----------+-----------+
+      |    [ Control Node ]   |
+      |                       |
+      |  MariaDB    RabbitMQ  |
+      |  Memcached  httpd     |
+      |  Keystone             |
+      +-----------------------+
 
 Contributors
 ==========
