@@ -79,9 +79,11 @@ Status: Stable
 
 .. image:: http://i.imgur.com/Frsughe.jpg
 
-2. Update system on all nodes (Controller, Network, Compute)
+2. Controller, Network, Compute
 ====================
+- Update system
 ::
+
   # yum update -y ; reboot
    
 - Edit the Hosts file on each server and set the below entries in case you don’t your local DNS server.
@@ -105,9 +107,10 @@ Execute the beneath commands one after the another to stop and disable firewalld
 
     ~]# setenforce 0 ; sed -i 's/=enforcing/=disabled/g' /etc/sysconfig/selinux
     
-3. Install RDO repository (Controller node)
+3. Controller node
 ====================
-Config NTP
+3.1 Config NTP
+--------------
 ::
 
     timedatectl set-timezone Asia/Ho_Chi_Minh
