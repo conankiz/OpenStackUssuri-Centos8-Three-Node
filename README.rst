@@ -102,6 +102,7 @@ Execute the beneath commands one after the another to stop and disable firewalld
     
 - Disable SELinux using below command
 ::
+
     ~]# setenforce 0 ; sed -i 's/=enforcing/=disabled/g' /etc/sysconfig/selinux
     
 3. Install RDO repository (Controller node)
