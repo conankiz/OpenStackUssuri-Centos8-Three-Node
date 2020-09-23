@@ -77,6 +77,12 @@ Status: Stable
   [root@controllernode ~]# yum install https://repos.fedorapeople.org/repos/openstack/openstack-ussuri/rdo-release-ussuri-1.el8.noarch.rpm
 
 Verify installed RDO package:
+::
+
+   [root@controllernode ~]# rpm -qa | grep rdo-release
+   rdo-release-ussuri-1.el8.noarch
+4. Install packstack automated installer (Controller node):
+====================
 
 * Restart the networking service::
 
