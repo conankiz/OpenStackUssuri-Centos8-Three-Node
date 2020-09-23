@@ -63,9 +63,9 @@ Status: Stable
 .. image:: http://i.imgur.com/Frsughe.jpg
 
 1.   Update system on all nodes (Controller, Network, Compute):
-   [root@controllernode ~]# yum  update
-   [root@networknode ~]# yum update
-   [root@computernode ~]# yum update
+    [root@controllernode ~]# yum  update
+    [root@networknode ~]# yum update
+    [root@computernode ~]# yum update
 
 2. Install RDO repository (Controller node):
   [root@controllernode ~]# yum install https://repos.fedorapeople.org/repos/openstack/openstack-ussuri/rdo-release-ussuri-1.el8.noarch.rpm
