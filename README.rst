@@ -129,7 +129,18 @@ Execute the beneath commands one after the another to stop and disable firewalld
 
    [root@controllernode ~]# dnf module -y install mariadb:10.3
    [root@controllernode ~]# vi /etc/my.cnf.d/charaset.cnf
+   '''
+      # create new
+      # set default charaset
+      # if not set, default is [latin1]
+      # for the case of 4 bytes UTF-8, specify [utf8mb4]
+      [mysqld]
+      character-set-server = utf8mb4
 
+      [client]
+      default-character-set = utf8mb4
+  '''
+  
 * Restart the networking service::
 
    service networking restart
