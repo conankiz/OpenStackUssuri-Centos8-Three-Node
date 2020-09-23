@@ -129,7 +129,8 @@ Execute the beneath commands one after the another to stop and disable firewalld
 
    [root@controllernode ~]# dnf module -y install mariadb:10.3
    [root@controllernode ~]# vi /etc/my.cnf.d/charaset.cnf
-   '''
+   ```bash
+   
       # create new
       # set default charaset
       # if not set, default is [latin1]
@@ -139,7 +140,7 @@ Execute the beneath commands one after the another to stop and disable firewalld
 
       [client]
       default-character-set = utf8mb4
-  '''
+  ```
   
 * Restart the networking service::
 
