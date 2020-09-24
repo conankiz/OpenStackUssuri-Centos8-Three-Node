@@ -43,17 +43,17 @@ Main Components of OpenStack::
       +-------------------+------------------------------------------------------------------------------+
       | Service           | Code Name         | Description                                              |
       +-------------------+-------------------+----------------------------------------------------------+
-      | Identity Service  | 	Keystone        | User Management                                          |
+      | Identity Service  | 	Keystone      | User Management                                          |
       +--------------+------------------------+----------------------------------------------------------+
-      | Compute Service   | 	Nova            | Virtual Machine Management                               |
+      | Compute Service   | 	Nova          | Virtual Machine Management                               |
       +--------------+------------------------+----------------------------------------------------------+
-      | Image Service     | 	Glance          | Manages Virtual image like kernel image or disk image    |
+      | Image Service     | 	Glance        | Manages Virtual image like kernel image or disk image    |
       +--------------+------------------------+----------------------------------------------------------+
-      | Dashboard         | 	Horizon         | Provides GUI console via Web browse                      |
+      | Dashboard         | 	Horizon       | Provides GUI console via Web browse                      |
       +--------------+------------------------+----------------------------------------------------------+
-      | Object Storage    | 	Swift           | Provides Cloud Storage                                   |
+      | Object Storage    | 	Swift         | Provides Cloud Storage                                   |
       +--------------+------------------------+----------------------------------------------------------+
-      | Network Service   | 	Neutron         | Virtual Networking Management                            |
+      | Network Service   | 	Neutron       | Virtual Networking Management                            |
       +--------------+------------------------+----------------------------------------------------------+
 
 
