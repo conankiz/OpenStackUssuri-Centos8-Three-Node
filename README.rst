@@ -37,6 +37,26 @@ Contributors
 =================================================== =======================================================
 
 Wana contribute ? Read the guide, send your contribution and get your name listed ;)
+Main Components of OpenStack::
+
+      +-------------------+------------------------------------------------------------------------------+
+      | Service           | Code Name         | Description                                              |
+      +-------------------+-------------------+----------------------------------------------------------+
+      | Identity Service  | 	Keystone        | User Management                                          |
+      +--------------+------------------------+----------------------------------------------------------+
+      | Compute Service   | 	Nova            | Virtual Machine Management                               |
+      +--------------+------------------------+----------------------------------------------------------+
+      | Image Service     | 	Glance          | Manages Virtual image like kernel image or disk image    |
+      +--------------+------------------------+----------------------------------------------------------+
+      | Dashboard         | 	Horizon         | Provides GUI console via Web browse                      |
+      +--------------+------------------------+----------------------------------------------------------+
+      | Object Storage    | 	Swift           | Provides Cloud Storage                                   |
+      +--------------+------------------------+----------------------------------------------------------+
+      | Network Service   | 	Neutron         | Virtual Networking Management                            |
+      +--------------+------------------------+----------------------------------------------------------+
+
+
+ 
 
 Table of Contents
 =================
@@ -359,10 +379,16 @@ Install and Configure OpenStack Identity Service (Keystone)
     export OS_PROJECT_NAME=admin
     export OS_USERNAME=admin
     export OS_PASSWORD=adminpassword
-    export OS_AUTH_URL=http://10.0.0.30:5000/v3
+    export OS_AUTH_URL=http://192.168.100.12:5000/v3
     export OS_IDENTITY_API_VERSION=3
     export OS_IMAGE_API_VERSION=2
     export PS1='[\u@\h \W(keystone)]\$ '
+    
+    
+    
+    
+    
+    
     
     [root@controllernode ~]# chmod 600 ~/keystonerc
     [root@controllernode ~]# source ~/keystonerc
