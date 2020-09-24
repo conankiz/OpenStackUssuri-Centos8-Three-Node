@@ -266,7 +266,8 @@ Execute the beneath commands one after the another to stop and disable firewalld
 3.7 Configure Keystone
 ------------
 Install and Configure OpenStack Identity Service (Keystone)
-- Add a User and Database on MariaDB for Keystone:
+- Add a User and Database on MariaDB for Keystone
+
 ::
 
       [root@controllernode ~]# mysql -u root -p
