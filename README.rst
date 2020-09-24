@@ -295,13 +295,15 @@ Install and Configure OpenStack Identity Service (Keystone)
       MariaDB [(none)]> exit
       Bye
 
-- Install Keystone:
+- Install Keystone
  + install from Ussuri, EPEL, PowerTools
+ 
  ::
     
     [root@controllernode ~]# dnf --enablerepo=centos-openstack-ussuri,PowerTools -y install openstack-keystone python3-openstackclient httpd mod_ssl python3-mod_wsgi python3-oauth2client
  
-- Config Keystone:
+- Config Keystone
+
  ::
       
       
@@ -333,7 +335,7 @@ Install and Configure OpenStack Identity Service (Keystone)
         > --bootstrap-internal-url http://$controller:5000/v3/ \
         > --bootstrap-public-url http://$controller:5000/v3/ \
         > --bootstrap-region-id RegionOne
-- 	Enable settings for Keystone and start Apache httpd.
+- 	Enable settings for Keystone and start Apache httpd
 ::
 
       [root@controllernode ~]# vi /etc/httpd/conf/httpd.conf
