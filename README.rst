@@ -396,16 +396,171 @@ Install and Configure OpenStack Identity Service (Keystone)
       | 0834ee0e0aab41faaea4652d5880fa90 | service |
       | 0ac7f9ef37e340cc9aaeba4ef1d3d15e | admin   |
       +----------------------------------+---------+
-3.9. Configure Glance
+3.9. Configure Glance - Install and Configure OpenStack Image Service (Glance)
 -------------------
 - Add users and others for Glance in Keystone
-* create [glance] user in [service] project::
+   * create [glance] user in [service] project::
+   
+      [root@controllernode ~(keystone)]# openstack user create --domain default --project service --password servicepassword glance
+      +---------------------+----------------------------------+
+      | Field               | Value                            |
+      +---------------------+----------------------------------+
+      | default_project_id  | 0834ee0e0aab41faaea4652d5880fa90 |
+      | domain_id           | default                          |
+      | enabled             | True                             |
+      | id                  | 4354f39a6fec461f9659a1dd5dc124e6 |
+      | name                | glance                           |
+      | options             | {}                               |
+      | password_expires_at | None                             |
+      +---------------------+----------------------------------+
+  * add [glance] user in [admin] role::
+      
+      [root@controllernode ~(keystone)]# openstack role add --project service --user glance admin
+      
+  * create service entry for [glance]::
+      
+      [root@controllernode ~(keystone)]# openstack service create --name glance --description "OpenStack Image service" image
+      +-------------+----------------------------------+
+      | Field       | Value                            |
+      +-------------+----------------------------------+
+      | description | OpenStack Image service          |
+      | enabled     | True                             |
+      | id          | a82f9d6328db46a284a2df2c42cbbb52 |
+      | name        | glance                           |
+      | type        | image                            |
+      +-------------+----------------------------------+
+      
+   * define Glance API Host::
+   
+      [root@controllernode ~(keystone)]# export controller=192.168.100.12
+      
+   * create endpoint for [glance] (public)::
+      
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image public http://$controllernode:9292
+      +--------------+----------------------------------+
+      | Field        | Value                            |
+      +--------------+----------------------------------+
+      | enabled      | True                             |
+      | id           | e7cbcc9df4b04480a57ae8eb311906a9 |
+      | interface    | public                           |
+      | region       | RegionOne                        |
+      | region_id    | RegionOne                        |
+      | service_id   | a82f9d6328db46a284a2df2c42cbbb52 |
+      | service_name | glance                           |
+      | service_type | image                            |
+      | url          | http://192.168.100.12:9292       |
+      +--------------+----------------------------------+
+      
+   * create endpoint for [glance] (internal)::
+   
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image internal http://192.168.100.12:9292
+      +--------------+----------------------------------+
+      | Field        | Value                            |
+      +--------------+----------------------------------+
+      | enabled      | True                             |
+      | id           | bc91960d561340249af12f06b081cf0d |
+      | interface    | internal                         |
+      | region       | RegionOne                        |
+      | region_id    | RegionOne                        |
+      | service_id   | a82f9d6328db46a284a2df2c42cbbb52 |
+      | service_name | glance                           |
+      | service_type | image                            |
+      | url          | http://192.168.100.12:9292       |
+      +--------------+----------------------------------+
+      
+   * create endpoint for [glance] (admin)::
+      
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image admin http://192.168.100.12:9292
+      +--------------+----------------------------------+
+      | Field        | Value                            |
+      +--------------+----------------------------------+
+      | enabled      | True                             |
+      | id           | 267a040c6592460aaff7bb49fea9e3a3 |
+      | interface    | admin                            |
+      | region       | RegionOne                        |
+      | region_id    | RegionOne                        |
+      | service_id   | a82f9d6328db46a284a2df2c42cbbb52 |
+      | service_name | glance                           |
+      | service_type | image                            |
+      | url          | http://192.168.100.12:9292       |
+      +--------------+----------------------------------+
+      
+- Add a User and Database on MariaDB for Glance.
+::
 
-   apt-get install -y rabbitmq-server 
+      [root@controllernode ~(keystone)]# mysql -u root -p
+      Enter password: 
+      Welcome to the MariaDB monitor.  Commands end with ; or \g.
+      Your MariaDB connection id is 16
+      Server version: 10.3.17-MariaDB MariaDB Server
 
-* Install NTP service::
+      Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-   apt-get install -y ntp
+      Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+      MariaDB [(none)]> create database glance; 
+      Query OK, 1 row affected (0.007 sec)
+
+      MariaDB [(none)]> grant all privileges on glance.* to glance@'localhost' identified by 'password';
+      Query OK, 0 rows affected (0.016 sec)
+
+      MariaDB [(none)]> grant all privileges on glance.* to glance@'%' identified by 'password';
+      Query OK, 0 rows affected (0.000 sec)
+
+      MariaDB [(none)]> flush privileges; 
+      Query OK, 0 rows affected (0.008 sec)
+
+      MariaDB [(none)]> exit
+      Bye
+- Install Glance.
+  * install from Ussuri, EPEL, PowerTools::
+  
+      [root@controllernode ~(keystone)]# dnf --enablerepo=centos-openstack-ussuri,PowerTools,epel -y install openstack-glance
+      
+- Configure Glance
+ ::
+      
+      [root@controllernode ~(keystone)]# mv /etc/glance/glance-api.conf /etc/glance/glance-api.conf.org
+      [root@controllernode ~(keystone)]# vi /etc/glance/glance-api.conf
+      # create new
+      [DEFAULT]
+      bind_host = 0.0.0.0
+
+      [glance_store]
+      stores = file,http
+      default_store = file
+      filesystem_store_datadir = /var/lib/glance/images/
+
+      [database]
+      # MariaDB connection info
+      connection = mysql+pymysql://glance:password@192.168.100.12/glance
+
+      # keystone auth info
+      [keystone_authtoken]
+      www_authenticate_uri = http://192.168.100.12:5000
+      auth_url = http://192.168.100.12:5000
+      memcached_servers = 192.168.100.12:11211
+      auth_type = password
+      project_domain_name = default
+      user_domain_name = default
+      project_name = service
+      username = glance
+      password = servicepassword
+
+      [paste_deploy]
+      flavor = keystone
+
+
+      [root@controllernode ~(keystone)]# chmod 640 /etc/glance/glance-api.conf
+      [root@controllernode ~(keystone)]# chown root:glance /etc/glance/glance-api.conf
+      [root@controllernode ~(keystone)]# su -s /bin/bash glance -c "glance-manage db_sync"
+
+      [root@controllernode ~(keystone)]# systemctl enable --now openstack-glance-api
+      Created symlink /etc/systemd/system/multi-user.target.wants/openstack-glance-api.service → /usr/lib/systemd/system/openstack-glance-api.service.
+
+
+3.10. Add VM Images
+
 
 * Create these databases::
 
