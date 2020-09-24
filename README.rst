@@ -294,8 +294,54 @@ Install and Configure OpenStack Identity Service (Keystone)
       MariaDB [(none)]> exit
       Bye
 
+- Install Keystone:
+ + install from Ussuri, EPEL, PowerTools
+ ::
+    
+    [root@controllernode ~]# dnf --enablerepo=centos-openstack-ussuri,PowerTools -y install openstack-keystone python3-openstackclient httpd mod_ssl python3-mod_wsgi python3-oauth2client
+ 
+- Config Keystone:
+ ::
+      
+      
+      [root@controllernode ~]# vi /etc/keystone/keystone.conf
+      # line 430: add the line to specify Memcache server
+      memcache_servers = 192.168.100.12:11211
+      # line 574: add the line to specify MariaDB connection info
+      connection = mysql+pymysql://keystone:password@192.168.100.12/keystone
+      # line 2446: uncomment
+      provider = fernet
+      
+      [root@controllernode ~]# su -s /bin/bash keystone -c "keystone-manage db_sync"
+  + initialize keys
+  ::
+  
+      [root@controllernode ~]# keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+      [root@controllernode ~]# keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+  
+  + define Keystone Host
+  ::
+  
+      [root@controllernode ~]# export controller=192.168.100.12
+  + bootstrap keystone
+  +replace any password you like for [adminpassword] section
+  ::
+  
+        [root@controllernode ~]# keystone-manage bootstrap --bootstrap-password adminpassword \
+        > --bootstrap-admin-url http://$controller:5000/v3/ \
+        > --bootstrap-internal-url http://$controller:5000/v3/ \
+        > --bootstrap-public-url http://$controller:5000/v3/ \
+        > --bootstrap-region-id RegionOne
+- 	Enable settings for Keystone and start Apache httpd.
+::
 
-
+      [root@controllernode ~]# vi /etc/httpd/conf/httpd.conf
+      # line 98: uncomment and change to your server name
+      ServerName ServerName controllernode.test.local:80
+      
+      [root@controllernode ~]# ln -s /usr/share/keystone/wsgi-keystone.conf /etc/httpd/conf.d/
+      [root@controllernode ~]# systemctl enable --now httpd
+      Created symlink /etc/systemd/system/multi-user.target.wants/httpd.service → /usr/lib/systemd/system/httpd.service.
 2.4. RabbitMQ
 -------------------
 
