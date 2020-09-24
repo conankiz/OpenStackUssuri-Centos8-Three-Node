@@ -298,13 +298,13 @@ Install and Configure OpenStack Identity Service (Keystone)
 - Install Keystone
  + install from Ussuri, EPEL, PowerTools
  
- ::
+::
     
     [root@controllernode ~]# dnf --enablerepo=centos-openstack-ussuri,PowerTools -y install openstack-keystone python3-openstackclient httpd mod_ssl python3-mod_wsgi python3-oauth2client
  
 - Config Keystone
 
- ::
+::
       
       
       [root@controllernode ~]# vi /etc/keystone/keystone.conf
@@ -345,10 +345,61 @@ Install and Configure OpenStack Identity Service (Keystone)
       [root@controllernode ~]# ln -s /usr/share/keystone/wsgi-keystone.conf /etc/httpd/conf.d/
       [root@controllernode ~]# systemctl enable --now httpd
       Created symlink /etc/systemd/system/multi-user.target.wants/httpd.service → /usr/lib/systemd/system/httpd.service.
-2.4. RabbitMQ
--------------------
+      
+3.7.1 Add Projects on Keystone
+* Create and Load environment variables file
+  The password for [OS_PASSWORD] is the one you set it on bootstrapping keystone.
+  The URL for [OS_AUTH_URL] is the Keystone server's hostname or IP address.
+  ::
+  
+    [root@controllernode ~]#  vi ~/keystonerc
+    
+    export OS_PROJECT_DOMAIN_NAME=default
+    export OS_USER_DOMAIN_NAME=default
+    export OS_PROJECT_NAME=admin
+    export OS_USERNAME=admin
+    export OS_PASSWORD=adminpassword
+    export OS_AUTH_URL=http://10.0.0.30:5000/v3
+    export OS_IDENTITY_API_VERSION=3
+    export OS_IMAGE_API_VERSION=2
+    export PS1='[\u@\h \W(keystone)]\$ '
+    
+    [root@controllernode ~]# chmod 600 ~/keystonerc
+    [root@controllernode ~]# source ~/keystonerc
+    [root@controllernode ~(keystone)]# echo "source ~/keystonerc " >> ~/.bash_profile
+    
+* create [service] project
+::
 
-* Install RabbitMQ::
+    [root@controllernode ~(keystone)]# openstack project create --domain default --description "Service Project" service
+    +-------------+----------------------------------+
+    | Field       | Value                            |
+    +-------------+----------------------------------+
+    | description | Service Project                  |
+    | domain_id   | default                          |
+    | enabled     | True                             |
+    | id          | 0834ee0e0aab41faaea4652d5880fa90 |
+    | is_domain   | False                            |
+    | name        | service                          |
+    | options     | {}                               |
+    | parent_id   | default                          |
+    | tags        | []                               |
+    +-------------+----------------------------------+
+    
+* confirm settings
+::
+
+      [root@controllernode ~(keystone)]# openstack project list
+      +----------------------------------+---------+
+      | ID                               | Name    |
+      +----------------------------------+---------+
+      | 0834ee0e0aab41faaea4652d5880fa90 | service |
+      | 0ac7f9ef37e340cc9aaeba4ef1d3d15e | admin   |
+      +----------------------------------+---------+
+3.9. Configure Glance
+-------------------
+- Add users and others for Glance in Keystone
+* create [glance] user in [service] project::
 
    apt-get install -y rabbitmq-server 
 
