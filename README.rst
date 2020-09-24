@@ -463,7 +463,7 @@ Install and Configure OpenStack Identity Service (Keystone)
       
    * create endpoint for [glance] (public)::
       
-      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image public http://$controllernode:9292
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image public http://$controller:9292
       +--------------+----------------------------------+
       | Field        | Value                            |
       +--------------+----------------------------------+
@@ -480,7 +480,7 @@ Install and Configure OpenStack Identity Service (Keystone)
       
    * create endpoint for [glance] (internal)::
    
-      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image internal http://192.168.100.12:9292
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image internal http://$controller:9292
       +--------------+----------------------------------+
       | Field        | Value                            |
       +--------------+----------------------------------+
@@ -497,7 +497,7 @@ Install and Configure OpenStack Identity Service (Keystone)
       
    * create endpoint for [glance] (admin)::
       
-      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image admin http://192.168.100.12:9292
+      [root@controllernode ~(keystone)]# openstack endpoint create --region RegionOne image admin http://$controller:9292
       +--------------+----------------------------------+
       | Field        | Value                            |
       +--------------+----------------------------------+
